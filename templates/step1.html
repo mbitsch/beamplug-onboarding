@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Trin 1 – Kunde-id{% endblock %}
+
+{% block content %}
+<div class="step">
+    <div class="step-number">Trin 1 af 4</div>
+    <h2>Velkommen</h2>
+    <p>Du er ved at tilslutte din BEAM-plug.</p>
+    <p>For at komme godt i gang skal du bruge:</p>
+    <ul>
+        <li>Dit kunde-id (fra Bodil Energi / aftalen)</li>
+        <li>Navn på dit WiFi-netværk (SSID)</li>
+        <li>Koden til dit WiFi</li>
+        <li>Dine betalingsoplysninger (f.eks. kontonummer eller IBAN)</li>
+    </ul>
+    <p>Sæt nu BEAM-pluggen i din elradiator og i stikkontakten.</p>
+    <p>Elradiatoren skal stå på <b>maksimal varme</b>, så BEAM-pluggen kan styre effekten.</p>
+
+    <form method="post" action="{{ url_for('onboarding') }}">
+        <label>Kunde-id
+            <input type="text" name="customer_id" required />
+        </label>
+        <input type="hidden" name="step" value="2" />
+        <button type="submit">Næste: WiFi-oplysninger</button>
+    </form>
+</div>
+{% endblock %}

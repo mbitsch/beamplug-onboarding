@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Trin 2 – WiFi{% endblock %}
+
+{% block content %}
+<div class="step">
+    <div class="step-number">Trin 2 af 4</div>
+    <h2>Indtast WiFi-oplysninger</h2>
+    <p>Vælg det WiFi, du vil bruge til din BEAM-plug.</p>
+
+    <form method="post" action="{{ url_for('onboarding') }}">
+        <label>WiFi-navn (SSID)
+            <input type="text" name="wifi_ssid" required />
+        </label>
+        <label>WiFi-kode
+            <input type="password" name="wifi_password" required />
+        </label>
+
+        <input type="hidden" name="customer_id" value="{{ customer_id }}">
+        <input type="hidden" name="step" value="3" />
+        <button type="submit">Næste: Radiator-indstilling</button>
+    </form>
+</div>
+{% endblock %}

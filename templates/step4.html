@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Trin 4 – Betaling{% endblock %}
+
+{% block content %}
+<div class="step">
+    <div class="step-number">Trin 4 af 4</div>
+
+    {% if not finished %}
+        <h2>Betalingsoplysninger</h2>
+        <p>Indtast kontooplysninger, så du kan få betaling for din netbalancering.</p>
+
+        <form method="post" action="{{ url_for('onboarding') }}">
+            <label>Betalingsoplysninger
+                <input type="text" name="payment_info"
+                       placeholder="f.eks. Reg.nr. + kontonr. eller IBAN" required />
+            </label>
+
+            <input type="hidden" name="customer_id" value="{{ customer_id }}">
+            <input type="hidden" name="wifi_ssid" value="{{ wifi_ssid }}">
+            <input type="hidden" name="wifi_password" value="{{ wifi_password }}">
+            <input type="hidden" name="radiator_setting" value="{{ radiator_setting }}">
+            <input type="hidden" name="step" value="4" />
+
+            <button type="submit">Afslut og tilslut</button>
+        </form>
+    {% else %}
+        <h2>Tak! Din BEAM-plug er registreret</h2>
+        <p>Vi har gemt dine oplysninger for kunde-id: <b>{{ customer_id }}</b>.</p>
+        <p>BEAM-pluggen vil nu blive testet via Energinet.
+           Du vil modtage betaling for din netbalancering efter aftale.</p>
+    {% endif %}
+</div>
+{% endblock %}

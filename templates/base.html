@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}BEAM-plug onboarding{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='farvelade.css') }}">
+</head>
+<body>
+
+<div class="app-wrapper">
+
+    <!-- LOGO -->
+    <div class="logo">
+        <span>BODIL</span> ENERGI
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-container">
+        <div class="progress-track">
+            <div class="progress-fill step-{{ current_step|default(1) }}"></div>
+        </div>
+        <div class="progress-steps">
+            <div class="step-circle {% if current_step >= 1 %}active{% endif %}">1</div>
+            <div class="step-circle {% if current_step >= 2 %}active{% endif %}">2</div>
+            <div class="step-circle {% if current_step >= 3 %}active{% endif %}">3</div>
+            <div class="step-circle {% if current_step >= 4 %}active{% endif %}">4</div>
+        </div>
+    </div>
+
+    <div class="box">
+        {% block content %}{% endblock %}
+    </div>
+
+</div>
+
+</body>
+</html>

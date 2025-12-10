@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Trin 3 – Radiator{% endblock %}
+
+{% block content %}
+<div class="step">
+    <div class="step-number">Trin 3 af 4</div>
+    <h2>Radiator-indstilling</h2>
+    <p>Sørg for at din elradiator er tændt og står på maksimal varme.</p>
+    <p>Hvis din radiator har trin, vælg typisk det højeste (fx 5 eller 6).</p>
+
+    <form method="post" action="{{ url_for('onboarding') }}">
+        <label>Hvilken indstilling står radiatoren på?
+            <input type="text" name="radiator_setting"
+                   placeholder="f.eks. Trin 5 / Max" required />
+        </label>
+
+        <input type="hidden" name="customer_id" value="{{ customer_id }}">
+        <input type="hidden" name="wifi_ssid" value="{{ wifi_ssid }}">
+        <input type="hidden" name="wifi_password" value="{{ wifi_password }}">
+        <input type="hidden" name="step" value="4" />
+        <button type="submit">Næste: Betalingsoplysninger</button>
+    </form>
+</div>
+{% endblock %}

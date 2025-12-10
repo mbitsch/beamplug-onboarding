@@ -3,7 +3,12 @@ import psycopg2
 import os
 
 def get_conn():
-    return psycopg2.connect(
+    database_url = os.environ.get("DATABASE_URL")
+    if database_url:
+        return psycopg2.connect(database_url)
+    else: 
+
+        return psycopg2.connect(
             host="pg-145fc447-test1-d59a.g.aivencloud.com",      # fx "localhost"
             port=10580,             # standardport
             dbname="beam",     # navnet på din database i pgAdmin

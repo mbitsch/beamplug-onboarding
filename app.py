@@ -24,28 +24,28 @@ def onboarding():
         return render_template("step1.html", current_step=1)
 
     # ========== STEP 2 ==========
-    # WiFi-info
+    # (det der før var step 3)
     if step == 2:
-        customer_id = request.form.get("customer_id", "")
-
-        return render_template(
-            "step2.html",
-            customer_id=customer_id,
-            current_step=2,
-        )
-
-    # ========== STEP 3 ==========
-    # Radiator-indstilling
-    if step == 3:
         customer_id = request.form.get("customer_id", "")
         wifi_ssid = request.form.get("wifi_ssid", "")
         wifi_password = request.form.get("wifi_password", "")
 
         return render_template(
-            "step3.html",
+            "step2.html",          # <--- Læg mærke til: step3.html
             customer_id=customer_id,
             wifi_ssid=wifi_ssid,
             wifi_password=wifi_password,
+            current_step=2,
+        )
+
+    # ========== STEP 3 ==========
+    # (det der før var step 2)
+    if step == 3:
+        customer_id = request.form.get("customer_id", "")
+
+        return render_template(
+            "step3.html",          # <--- Læg mærke til: step2.html
+            customer_id=customer_id,
             current_step=3,
         )
 

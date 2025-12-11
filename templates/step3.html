@@ -5,20 +5,102 @@
 {% block content %}
 <div class="step">
     <div class="step-number">Trin 3 af 4</div>
-    <h2>Indtast WiFi-oplysninger</h2>
-    <p>Vælg det WiFi, du vil bruge til din BEAM-plug.</p>
+    <h2>Vælg WiFi og indtast kode</h2>
+    <p>Vælg det WiFi, du vil bruge til din BEAM-plug. Vi tester forbindelsen, før vi går videre.</p>
 
-    <form method="post" action="{{ url_for('onboarding') }}">
-        <label>WiFi-navn (SSID)
-            <input type="text" name="wifi_ssid" required />
-        </label>
+    <form method="post" action="{{ url_for('onboarding') }}" id="wifi-form">
+        <!-- WiFi dropdown -->
+        <label for="wifi_ssid_select">WiFi-navn (SSID)</label>
+        <select id="wifi_ssid_select" required>
+            <option value="" disabled selected>Vælg netværk</option>
+            <option value="Bodil_Guest">Bodil_Guest</option>
+            <option value="Bodil_HQ">Bodil_HQ</option>
+            <option value="MitHjemmeNet_5G">MitHjemmeNet_5G</option>
+            <option value="__other__">Andet netværk…</option>
+        </select>
+
+        <!-- “Andet netværk”-felt -->
+        <input
+            type="text"
+            id="wifi_ssid_other"
+            placeholder="Skriv WiFi-navn"
+            style="display:none; margin-top: 8px;"
+        />
+
+        <!-- Skjult felt som backend får -->
+        <input type="hidden" name="wifi_ssid" id="wifi_ssid_hidden" />
+
+        <!-- Password -->
         <label>WiFi-kode
-            <input type="password" name="wifi_password" required />
+            <input type="password" name="wifi_password" id="wifi_password" required />
         </label>
 
+        <!-- Status-tekst (fiktiv test) -->
+        <p id="wifi-status" style="margin-top:8px; font-size:0.9rem;"></p>
+
+        <!-- Hidden fields til flowet -->
         <input type="hidden" name="customer_id" value="{{ customer_id }}">
         <input type="hidden" name="step" value="4" />
-        <button type="submit">Næste: Betalingsoplysninger</button>
+
+        <button type="submit" id="wifi-submit">Forbind og gå videre</button>
     </form>
 </div>
+
+<script>
+    const selectEl = document.getElementById('wifi_ssid_select');
+    const otherInput = document.getElementById('wifi_ssid_other');
+    const hiddenSsid = document.getElementById('wifi_ssid_hidden');
+    const form = document.getElementById('wifi-form');
+    const statusEl = document.getElementById('wifi-status');
+    const submitBtn = document.getElementById('wifi-submit');
+    const wifiPassword = document.getElementById('wifi_password');
+
+    // Skift mellem dropdown og "andet netværk"
+    selectEl.addEventListener('change', () => {
+        if (selectEl.value === '__other__') {
+            otherInput.style.display = 'block';
+            otherInput.required = true;
+            hiddenSsid.value = ''; // vi sætter den lige før submit
+        } else {
+            otherInput.style.display = 'none';
+            otherInput.required = false;
+            hiddenSsid.value = selectEl.value;
+        }
+    });
+
+    // Fiktiv WiFi-validering
+    form.addEventListener('submit', (e) => {
+        e.preventDefault(); // stop normalt submit et øjeblik
+
+        // Simpel frontend-validering
+        let ssidValue = hiddenSsid.value;
+        if (selectEl.value === '__other__') {
+            ssidValue = otherInput.value.trim();
+        }
+
+        if (!ssidValue) {
+            statusEl.textContent = 'Vælg eller skriv et WiFi-navn.';
+            return;
+        }
+
+        if (!wifiPassword.value) {
+            statusEl.textContent = 'Indtast WiFi-koden.';
+            return;
+        }
+
+        // Sæt den værdi, som Flask faktisk modtager
+        hiddenSsid.value = ssidValue;
+
+        // Fiktiv “test” – her kunne man senere kalde et rigtigt API
+        submitBtn.disabled = true;
+        statusEl.textContent = 'Forbinder til WiFi…';
+
+        setTimeout(() => {
+            // Her lader vi som om forbindelsen lykkes
+            statusEl.textContent = 'Forbundet til WiFi ✅';
+            // Nu sender vi formen rigtigt videre til step 4
+            form.submit();
+        }, 1200); // lille forsinkelse for bedre oplevelse
+    });
+</script>
 {% endblock %}

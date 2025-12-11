@@ -14,14 +14,9 @@ def index():
 def onboarding():
     # Find aktuelt step (1–4)
     if request.method == "POST":
-        step_str = request.form.get("step", "1")
+        step = request.form.get("step", "1")
     else:
-        step_str = request.args.get("step", "1")
-
-    try:
-        step = int(step_str)
-    except ValueError:
-        step = 1
+        step = request.args.get("step", "1")
 
      # Kunde-id + velkomst
     if step == 1 and request.method == "GET":

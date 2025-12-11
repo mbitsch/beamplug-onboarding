@@ -215,3 +215,35 @@ button:hover {
     color: white;
     border-color: var(--blue);
 }
+/* WIFI STATUS-PILL */
+.status-message {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(148, 163, 184, 0.08); /* neutral som default */
+    color: var(--muted);
+}
+
+/* Loader / "forbinder" */
+.status-message--loading {
+    background: rgba(30, 144, 255, 0.08);
+    color: var(--blue);
+}
+
+/* Success / "godkendt" */
+.status-message--success {
+    background: rgba(43, 182, 115, 0.12);
+    color: var(--green-dark);
+    font-weight: 600;
+}
+
+/* Simple error-stil hvis du vil bruge den */
+.status-message--error {
+    background: rgba(248, 113, 113, 0.10);
+    color: #b91c1c;
+}

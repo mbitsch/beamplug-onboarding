@@ -6,7 +6,7 @@
 <div class="step">
     <div class="step-number">Trin 3 af 4</div>
     <h2>Vælg WiFi og indtast kode</h2>
-    <p>Vælg det WiFi, du vil bruge til din BEAM-plug. Vi tester forbindelsen, før vi går videre.</p>
+    <p>Vi forbinder din BEAM-plug til WiFi, før du går videre til betaling.</p>
 
     <form method="post" action="{{ url_for('onboarding') }}" id="wifi-form">
         <!-- WiFi dropdown -->
@@ -27,7 +27,7 @@
             style="display:none; margin-top: 8px;"
         />
 
-        <!-- Skjult felt som backend får -->
+        <!-- Skjult felt som Flask får -->
         <input type="hidden" name="wifi_ssid" id="wifi_ssid_hidden" />
 
         <!-- Password -->
@@ -35,8 +35,8 @@
             <input type="password" name="wifi_password" id="wifi_password" required />
         </label>
 
-        <!-- Status-tekst (fiktiv test) -->
-        <p id="wifi-status" style="margin-top:8px; font-size:0.9rem;"></p>
+        <!-- Lækker status-pill -->
+        <div id="wifi-status" class="status-message" style="display:none;"></div>
 
         <!-- Hidden fields til flowet -->
         <input type="hidden" name="customer_id" value="{{ customer_id }}">
@@ -55,12 +55,25 @@
     const submitBtn = document.getElementById('wifi-submit');
     const wifiPassword = document.getElementById('wifi_password');
 
+    function clearStatus() {
+        statusEl.style.display = 'none';
+        statusEl.textContent = '';
+        statusEl.className = 'status-message';
+    }
+
+    function showStatus(type, message) {
+        statusEl.style.display = 'inline-flex';
+        statusEl.className = 'status-message status-message--' + type;
+        statusEl.textContent = message;
+    }
+
     // Skift mellem dropdown og "andet netværk"
     selectEl.addEventListener('change', () => {
+        clearStatus();
         if (selectEl.value === '__other__') {
             otherInput.style.display = 'block';
             otherInput.required = true;
-            hiddenSsid.value = ''; // vi sætter den lige før submit
+            hiddenSsid.value = '';
         } else {
             otherInput.style.display = 'none';
             otherInput.required = false;
@@ -71,6 +84,7 @@
     // Fiktiv WiFi-validering
     form.addEventListener('submit', (e) => {
         e.preventDefault(); // stop normalt submit et øjeblik
+        clearStatus();
 
         // Simpel frontend-validering
         let ssidValue = hiddenSsid.value;
@@ -79,28 +93,31 @@
         }
 
         if (!ssidValue) {
-            statusEl.textContent = 'Vælg eller skriv et WiFi-navn.';
+            showStatus('error', 'Vælg eller skriv et WiFi-navn.');
             return;
         }
 
         if (!wifiPassword.value) {
-            statusEl.textContent = 'Indtast WiFi-koden.';
+            showStatus('error', 'Indtast WiFi-koden.');
             return;
         }
 
         // Sæt den værdi, som Flask faktisk modtager
         hiddenSsid.value = ssidValue;
 
-        // Fiktiv “test” – her kunne man senere kalde et rigtigt API
+        // Fiktiv “test”
         submitBtn.disabled = true;
-        statusEl.textContent = 'Forbinder til WiFi…';
+        showStatus('loading', 'Forbinder til WiFi…');
 
         setTimeout(() => {
-            // Her lader vi som om forbindelsen lykkes
-            statusEl.textContent = 'Forbundet til WiFi ✅';
-            // Nu sender vi formen rigtigt videre til step 4
-            form.submit();
-        }, 1200); // lille forsinkelse for bedre oplevelse
+            // Lad som om forbindelsen lykkes
+            showStatus('success', 'WiFi godkendt – går videre til næste trin ✔️');
+
+            // Giv brugeren et kort øjeblik til at se beskeden
+            setTimeout(() => {
+                form.submit();
+            }, 700);
+        }, 1200);
     });
 </script>
 {% endblock %}

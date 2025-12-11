@@ -27,15 +27,14 @@
             style="display:none; margin-top: 8px;"
         />
 
-        <!-- Skjult felt som Flask får -->
+        <!-- Skjult felt som Flask får (det er denne værdi, der ryger til backend) -->
         <input type="hidden" name="wifi_ssid" id="wifi_ssid_hidden" />
 
         <!-- Password -->
-        <label>WiFi-kode
-            <input type="password" name="wifi_password" id="wifi_password" required />
-        </label>
+        <label for="wifi_password">WiFi-kode</label>
+        <input type="password" name="wifi_password" id="wifi_password" required />
 
-        <!-- Lækker status-pill -->
+        <!-- Status-tekst (loader + godkendt) -->
         <div id="wifi-status" class="status-message" style="display:none;"></div>
 
         <!-- Hidden fields til flowet -->
@@ -81,12 +80,11 @@
         }
     });
 
-    // Fiktiv WiFi-validering
+    // SUBMIT — loader i 5 sekunder og godkender
     form.addEventListener('submit', (e) => {
-        e.preventDefault(); // stop normalt submit et øjeblik
+        e.preventDefault();
         clearStatus();
 
-        // Simpel frontend-validering
         let ssidValue = hiddenSsid.value;
         if (selectEl.value === '__other__') {
             ssidValue = otherInput.value.trim();
@@ -102,22 +100,23 @@
             return;
         }
 
-        // Sæt den værdi, som Flask faktisk modtager
+        // Sæt værdi til backend
         hiddenSsid.value = ssidValue;
 
-        // Fiktiv “test”
+        // Start loading (5 sekunder)
         submitBtn.disabled = true;
         showStatus('loading', 'Forbinder til WiFi…');
 
         setTimeout(() => {
-            // Lad som om forbindelsen lykkes
+            // Efter 5 sekunder: godkendt
             showStatus('success', 'WiFi godkendt – går videre til næste trin ✔️');
 
-            // Giv brugeren et kort øjeblik til at se beskeden
+            // Lille pause så brugeren når at se beskeden
             setTimeout(() => {
                 form.submit();
-            }, 700);
-        }, 1200);
+            }, 800);
+
+        }, 5000); // 5 sekunders loading
     });
 </script>
 {% endblock %}

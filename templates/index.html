@@ -4,12 +4,15 @@
 
 {% block content %}
 <h2>Velkommen</h2>
-<p>Denne side bruges primært via QR-koder på BEAM-plugs.</p>
-<p>Scan QR-koden på din BEAM-plug, eller klik herunder for at starte onboarding:</p>
+<p>Tak fordi du hjælper os med at gøre din BEAM-plug klar.  
+Din registrering gør det muligt for os at optimere dit energiforbrug og sikre, at alt fungerer som det skal.</p>
+
+<p>Det tager et øjeblik – klik herunder for at gå i gang:</p>
 
 <p>
     <a href="{{ url_for('onboarding', step=1) }}">
         <button>Start onboarding</button>
     </a>
 </p>
+
 {% endblock %}

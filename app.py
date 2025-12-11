@@ -29,7 +29,7 @@ def onboarding():
 
     # ---------- STEP 1: Start (fra forsiden / QR) ----------
     # Vi starter bare direkte på radiator-step (step2.html)
-    if step == 1 and request.method == "GET":
+    if step == 2 and request.method == "GET":
         customer_id = request.args.get("customer_id", "")  # kan komme fra QR
         return render_template(
             "step2.html",

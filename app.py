@@ -40,8 +40,8 @@ def onboarding():
 
     # ========== STEP 3 ==========
     # (det der før var step 2)
-    if step == 3:
-        customer_id = request.form.get("customer_id", "")
+        if step == 3:
+            customer_id = request.form.get("customer_id", "")
 
         return render_template(
             "step3.html",          # <--- Læg mærke til: step2.html

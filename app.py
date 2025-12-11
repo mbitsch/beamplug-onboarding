@@ -23,6 +23,10 @@ def onboarding():
     except ValueError:
         step = 1
 
+     # Kunde-id + velkomst
+    if step == 1 and request.method == "GET":
+        return render_template("step1.html", current_step=1)
+
     # ---------- STEP 1: Start (fra forsiden / QR) ----------
     # Vi starter bare direkte på radiator-step (step2.html)
     if step == 1 and request.method == "GET":
